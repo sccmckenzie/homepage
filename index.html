@@ -4,14 +4,88 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Homepage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: goldenrod;
+      color: #222;
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      line-height: 1.6;
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 3rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo {
+      width: 15rem;
+      aspect-ratio: 1;
+      flex-shrink: 0;
+      background-color: currentColor;
+      -webkit-mask: url(ocotillo.svg) center / contain no-repeat;
+      mask: url(ocotillo.svg) center / contain no-repeat;
+    }
+
+    main {
+      max-width: 40rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    h1 {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 2.5rem;
+      margin-bottom: 0;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-top: 0.25rem;
+    }
+
+    hr {
+      color: inherit;
+      border: none;
+      border-top: 1px solid currentColor;
+      margin: 1.5rem 0;
+    }
+
+    .links a {
+      color: inherit;
+      font-weight: 600;
+      margin-right: 1.5rem;
+    }
+
+    .links a:hover {
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-  <h1>Scott McKenzie</h1>
-  <h2>Data Engineer</h2>
-  <p>Every organization has valuable insights hidden across its enterprise
-    applications, but they're often too fragmented to act on. My work in
-    manufacturing covers both halves of the problem: (1) building a centralized
-    data model, and (2) turning that data into compelling stories that drive
-    <em>better</em> decisions.</p>
+  <div class="logo" role="img" aria-label="Ocotillo"></div>
+  <main>
+    <h1>Scott McKenzie</h1>
+    <h2>Data Engineer</h2>
+    <p>Every organization has valuable insights hidden across its enterprise
+      applications, but they're often too fragmented to act on. My work in
+      manufacturing covers both halves of the problem: (1) building a centralized
+      data model, and (2) turning that data into compelling stories that drive
+      <strong>intelligent</strong> decisions.</p>
+    <hr>
+    <nav class="links" style="text-align: left;">
+      <a href="#">LinkedIn</a>
+      <a href="#">X</a>
+    </nav>
+  </main>
 </body>
 </html>
