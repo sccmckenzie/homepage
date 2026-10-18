@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <title>Ocotillo</title>
+  <defs>
+    <g id="canes">
+      <path d="M100,185 Q60,145 22,80"/>
+      <path d="M100,185 Q70,120 38,40"/>
+      <path d="M100,185 Q82,110 66,22"/>
+      <path d="M100,185 Q95,100 92,12"/>
+      <path d="M100,185 Q108,100 114,16"/>
+      <path d="M100,185 Q122,110 140,28"/>
+      <path d="M100,185 Q135,125 166,48"/>
+      <path d="M100,185 Q142,148 180,90"/>
+    </g>
+    <g id="bloom">
+      <ellipse cx="0" cy="-6" rx="3.2" ry="7" fill="#e2452b"/>
+      <ellipse cx="0" cy="-9" rx="1.8" ry="4" fill="#f57a3a"/>
+    </g>
+  </defs>
+
+  <!-- ground -->
+  <ellipse cx="100" cy="186" rx="46" ry="6" fill="#d9b98a"/>
+  <ellipse cx="100" cy="185" rx="14" ry="3.5" fill="#a88a5c"/>
+
+  <!-- stems -->
+  <use href="#canes" fill="none" stroke="#5e5236" stroke-width="2.6" stroke-linecap="round"/>
+
+  <!-- small leaves along the stems -->
+  <use href="#canes" fill="none" stroke="#7fae3c" stroke-width="3.6" stroke-linecap="round"
+       stroke-dasharray="0 7" stroke-dashoffset="-12"/>
+
+  <!-- red flower clusters at the tips -->
+  <use href="#bloom" transform="translate(22 80) rotate(-30)"/>
+  <use href="#bloom" transform="translate(38 40) rotate(-22)"/>
+  <use href="#bloom" transform="translate(66 22) rotate(-10)"/>
+  <use href="#bloom" transform="translate(92 12) rotate(-2)"/>
+  <use href="#bloom" transform="translate(114 16) rotate(4)"/>
+  <use href="#bloom" transform="translate(140 28) rotate(12)"/>
+  <use href="#bloom" transform="translate(166 48) rotate(22)"/>
+  <use href="#bloom" transform="translate(180 90) rotate(33)"/>
+</svg>

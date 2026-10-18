@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello World</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --surface-1: #fcfcfb;
+      --text-primary: #0b0b0b;
+      --text-secondary: #52514e;
+      --grid: #e4e3df;
+      --series-1: #2a78d6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --surface-1: #1a1a19;
+        --text-primary: #f0efec;
+        --text-secondary: #c3c2b7;
+        --grid: #33332f;
+        --series-1: #3987e5;
+      }
+    }
+    body {
+      margin: 0;
+      padding: 16px;
+      background: var(--surface-1);
+      color: var(--text-primary);
+      font-family: system-ui, sans-serif;
+    }
+    #chart { max-width: 560px; position: relative; }
+    #chart svg { width: 100%; height: auto; display: block; }
+    .axis text { fill: var(--text-secondary); font-size: 12px; }
+    .axis path, .axis line { stroke: var(--grid); }
+    .grid line { stroke: var(--grid); }
+    .grid path { display: none; }
+    .bar { fill: var(--series-1); }
+    .bar.dim { opacity: 0.5; }
+    .label { fill: var(--text-primary); font-size: 12px; }
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--surface-1);
+      color: var(--text-primary);
+      border: 1px solid var(--grid);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 12px;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hello World!</h1>
+
+  <div id="chart">
+    <div class="tooltip"></div>
+  </div>
+
+  <script>
+    const data = [
+      { name: "A", value: 1 },
+      { name: "B", value: 5 },
+      { name: "C", value: 8 },
+      { name: "D", value: 10 }
+    ];
+
+    const width = 560;
+    const height = 320;
+    const margin = { top: 24, right: 16, bottom: 32, left: 40 };
+    const r = 4; // rounded data-end radius
+
+    const x = d3.scaleBand()
+      .domain(data.map(d => d.name))
+      .range([margin.left, width - margin.right])
+      .padding(0.3);
+
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.value)]).nice()
+      .range([height - margin.bottom, margin.top]);
+
+    const svg = d3.select("#chart")
+      .insert("svg", ".tooltip")
+      .attr("viewBox", [0, 0, width, height])
+      .attr("role", "img")
+      .attr("aria-label", "Bar chart of values for A through D");
+
+    // Recessive horizontal gridlines
+    svg.append("g")
+      .attr("class", "grid")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickSize(-(width - margin.left - margin.right)).tickFormat(""));
+
+    svg.append("g")
+      .attr("class", "axis")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x).tickSizeOuter(0));
+
+    svg.append("g")
+      .attr("class", "axis")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickSize(0).tickPadding(8))
+      .call(g => g.select(".domain").remove());
+
+    // Bar path: rounded top corners, square at the baseline
+    const barPath = d => {
+      const x0 = x(d.name), w = x.bandwidth();
+      const y0 = y(0), y1 = y(d.value);
+      const rr = Math.min(r, (y0 - y1), w / 2);
+      return `M${x0},${y0}V${y1 + rr}Q${x0},${y1} ${x0 + rr},${y1}` +
+             `H${x0 + w - rr}Q${x0 + w},${y1} ${x0 + w},${y1 + rr}V${y0}Z`;
+    };
+
+    const tooltip = d3.select("#chart .tooltip");
+
+    svg.append("g")
+      .selectAll("path")
+      .data(data)
+      .join("path")
+      .attr("class", "bar")
+      .attr("d", barPath)
+      .on("mousemove", (event, d) => {
+        const [mx, my] = d3.pointer(event, document.getElementById("chart"));
+        svg.selectAll(".bar").classed("dim", b => b !== d);
+        tooltip
+          .style("opacity", 1)
+          .style("left", `${mx + 12}px`)
+          .style("top", `${my - 28}px`)
+          .html(`<strong>${d.name}</strong>: ${d.value}`);
+      })
+      .on("mouseleave", () => {
+        svg.selectAll(".bar").classed("dim", false);
+        tooltip.style("opacity", 0);
+      });
+
+    // Value labels above each bar
+    svg.append("g")
+      .selectAll("text")
+      .data(data)
+      .join("text")
+      .attr("class", "label")
+      .attr("x", d => x(d.name) + x.bandwidth() / 2)
+      .attr("y", d => y(d.value) - 6)
+      .attr("text-anchor", "middle")
+      .text(d => d.value);
+  </script>
+</body>
+</html>
